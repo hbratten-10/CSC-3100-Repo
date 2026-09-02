@@ -14,7 +14,6 @@
   "author": "Hannah Bratten",
   "type": "module",
   "main": "index.js",
- 
   "scripts": {
     "test": "Test",
     "dev": "npm run dev --workspace=react-frontend"
@@ -122,10 +121,10 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.4",
     "globals": "^17.11.0",
+    "nodemon": "^3.1.14",
     "vite": "^8.2.2"
-  }
-      ,
-    "workspaces": [
-        "packages/*"
-    ]
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
