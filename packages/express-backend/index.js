@@ -69,7 +69,12 @@ app.get("/users", (req, res) => {
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
-
+//Assign ID method
+const assignUserID = (user) => {
+  const id = Math.floor(Math.random() * 1000000);
+  user["id"]=id;
+  return user;
+};
 
 //Post method
 const addUser = (user) => {
@@ -79,8 +84,9 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  assignUserID(userToAdd);
   addUser(userToAdd);
-  res.send();
+  res.status(201).send("Content created.");
 });
 
 //Delete method
@@ -97,6 +103,8 @@ app.delete("/users", (req, res) => {
   removeUser(idToRemove);
   res.send();
 });
+
+
 
 //Get by name and id method
 const findUserByNameAndID = (name, id) => {

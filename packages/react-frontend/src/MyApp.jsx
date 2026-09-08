@@ -23,7 +23,7 @@ function MyApp() {
     return promise;
   }
    function postUser(person) {
-    const promise = fetch("Http://localhost:8000/users", {
+    const promise = fetch("http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,11 @@ function MyApp() {
   }
   function updateList(person) { 
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((response) => {
+      if (response.status === 201) {
+        setCharacters([...characters, person]);
+      }
+    })
       .catch((error) => {
         console.log(error);
       })
