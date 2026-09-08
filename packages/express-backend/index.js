@@ -37,6 +37,65 @@ const port = 8000;
 app.use(express.json());
 
 
+const findUserByName = (name) => {
+  return users["users_list"].filter(
+    (user) => user["name"] === name
+  );
+};
+
+
+app.get("/users", (req, res) => {
+  const name = req.query.name;
+  const id = req.query.id;
+
+  if (name != undefined && id != undefined) {
+    let result = findUserByNameAndID(name, id);
+    result = { users_list: result };
+    res.send(result);
+  } 
+  else if (name != undefined) {
+    let result = findUserByName(name);
+    result = { users_list: result };
+    res.send(result);
+  } 
+  else {
+    res.send(users);
+  }
+});
+
+
+const findUserById = (id) =>
+  users["users_list"].find((user) => user["id"] === id);
+
+
+
+//Post method
+const addUser = (user) => {
+  users["users_list"].push(user);
+  return user;
+};
+
+app.post("/users", (req, res) => {
+  const userToAdd = req.body;
+  addUser(userToAdd);
+  res.send();
+});
+
+//Delete method
+const removeUser = (id) => {
+  const index = users["users_list"].findIndex(user => user.id === id);
+
+  if (index !== -1) {
+    users["users_list"].splice(index, 1);
+  }
+};
+
+app.delete("/users", (req, res) => {
+  const idToRemove = req.body.id;
+  removeUser(idToRemove);
+  res.send();
+});
+
 //Get by name and id method
 const findUserByNameAndID = (name, id) => {
   return users["users_list"].filter(
@@ -44,29 +103,6 @@ const findUserByNameAndID = (name, id) => {
   );
 };
 
-//Either gets all the users, by name, or by name and id
-//, depending on request
-app.get("/users", (req, res) => {
-  const name = req.query.name;
-  const id = req.query.id;
-  if (name != undefined && id != undefined) {
-    let result = findUserByNameAndID(name, id);
-    result = { users_list: result };
-    res.send(result);
-  } else if (name != undefined) {
-    let result = findUserByName(name);
-    result = { users_list: result };
-    res.send(result);
-  } else {
-    res.send(users);
-  }
-});
-
-app.use(express.json());
-
-app.get("/users", (req, res) => {
-  res.send(users);
-});
 
 app.listen(port, () => {
   console.log(
