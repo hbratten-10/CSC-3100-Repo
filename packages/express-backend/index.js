@@ -69,24 +69,18 @@ app.get("/users", (req, res) => {
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
-//Assign ID method
-const assignUserID = (user) => {
-  const id = Math.floor(Math.random() * 1000000);
-  user["id"]=id;
-  return user;
-};
-
 //Post method
 const addUser = (user) => {
+  const id = Math.floor(Math.random() * 1000000).toString();;
+  user["id"]=id;
   users["users_list"].push(user);
   return user;
 };
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  assignUserID(userToAdd);
   addUser(userToAdd);
-  res.status(201).send("Content created.");
+  res.status(201).send(userToAdd);
 });
 
 //Delete method
@@ -95,15 +89,26 @@ const removeUser = (id) => {
 
   if (index !== -1) {
     users["users_list"].splice(index, 1);
+    return true;
   }
+
+  return false;
 };
 
-app.delete("/users", (req, res) => {
-  const idToRemove = req.body.id;
-  removeUser(idToRemove);
-  res.send();
-});
+app.delete("/users/:id", (req, res) => {
+  const idToRemove = req.params.id;
+  console.log("ID from URL:", idToRemove);
+  console.log("Type:", typeof idToRemove);
+  console.log("Users:", users["users_list"]);
 
+  const deleted = removeUser(idToRemove);
+
+  if (deleted) {
+    res.status(204).send();
+  } else {
+    res.status(404).send("User not found.");
+  }
+});
 
 
 //Get by name and id method

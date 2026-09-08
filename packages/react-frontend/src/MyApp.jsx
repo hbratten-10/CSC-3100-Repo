@@ -8,12 +8,31 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+  function removeOneCharacter(id) {
+  console.log("Trying to delete:", id);
+
+  const promise = fetch("http://localhost:8000/users/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  })
+    .then((response) => {
+      console.log("DELETE status:", response.status);
+
+      if (response.status === 204) {
+        const updated = characters.filter((character) => {
+          return character.id !== id;
+        });
+
+        setCharacters(updated);
+      } else {
+        console.log("Error in delete on backend");
+      }
     });
-    setCharacters(updated);
-  }
+
+  return promise;
+}
   function updateList(person) {
   setCharacters([...characters, person]);
   }
@@ -37,8 +56,11 @@ function MyApp() {
     postUser(person)
       .then((response) => {
       if (response.status === 201) {
-        setCharacters([...characters, person]);
-      }
+        response.json()
+          .then((response) => { 
+        setCharacters([...characters, response]);
+      })
+    }
     })
       .catch((error) => {
         console.log(error);
