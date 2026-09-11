@@ -1,0 +1,23 @@
+{
+  "name": "unit-tests",
+  "version": "1.0.0",
+  "description": "unit test assignment",
+  "homepage": "https://github.com/hbratten-10/CSC-3100-Repo#readme",
+  "bugs": {
+    "url": "https://github.com/hbratten-10/CSC-3100-Repo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hbratten-10/CSC-3100-Repo.git"
+  },
+  "license": "ISC",
+  "author": "Hannah Bratten",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "jest": "^30.5.1"
+  }
+}
