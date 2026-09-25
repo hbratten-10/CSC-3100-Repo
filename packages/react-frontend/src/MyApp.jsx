@@ -8,10 +8,10 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
 
-  function removeOneCharacter(id) {
-  console.log("Trying to delete:", id);
+  function removeOneCharacter(_id) {
+  console.log("Trying to delete:", _id);
 
-  const promise = fetch("http://localhost:8000/users/" + id, {
+  const promise = fetch("http://localhost:8000/users/" + _id, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ function MyApp() {
 
       if (response.status === 204) {
         const updated = characters.filter((character) => {
-          return character.id !== id;
+          return character._id !== _id;
         });
 
         setCharacters(updated);
